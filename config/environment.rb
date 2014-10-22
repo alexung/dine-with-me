@@ -7,6 +7,7 @@ require 'bundler/setup' if File.exists?(ENV['BUNDLE_GEMFILE'])
 
 # Require gems we care about
 require 'rubygems'
+require 'pry'
 
 require 'uri'
 require 'pathname'
@@ -17,8 +18,19 @@ require 'logger'
 
 require 'sinatra'
 require "sinatra/reloader" if development?
+require 'dbc-ruby'
+require 'yaml'
+
+# require '../.env'
 
 require 'erb'
+
+token_info = File.read(File.expand_path('.yaml'))
+YAML.load(token_info).each do |k, v|
+  ENV[k] = v
+end
+
+#ENV['DBC_API'] = $DBC_API
 
 # Some helper constants for path-centric logic
 APP_ROOT = Pathname.new(File.expand_path('../../', __FILE__))
